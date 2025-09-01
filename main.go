@@ -6,6 +6,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	// "strings"
 )
 
 type CsvData struct {
@@ -30,7 +31,7 @@ func (c *CsvData) GetRecords() error {
 	records, err := reader.ReadAll()
 
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("Failid read from file %w", err)
 	}
 
 	c.Records = records
@@ -39,31 +40,48 @@ func (c *CsvData) GetRecords() error {
 }
 
 func (j *JsonData) MakeRecords(csvData [][]string) error {
+
+	if len(csvData) == 0 {
+		return fmt.Errorf("CSV data is empty")
+	}
+
 	f, err := os.Create(j.Path)
 
 	if err != nil {
-		return err
+		return fmt.Errorf("failed create file %w", err)
 	}
 
 	defer f.Close()
 
 	encoder := json.NewEncoder(f)
+	encoder.SetIndent("", "  ")
 
-	csvMap := make(map[string]string, len(csvData))
+	headers := csvData[0]
+	results := make([]map[string]string, 0, len(csvData)-1)
 
-	for _, col := range csvData[0] {
-		csvMap[col] = ""
+	for i := 1; i < len(csvData); i++ {
+		obj := makeMap(headers, csvData[i])
+		results = append(results, obj)
+	}
 
-		for _, row := range csvData[1:] {
-			for _, item := range row {
-				csvMap[col] = item
-			}
+	if err := encoder.Encode(results); err != nil {
+		return fmt.Errorf("json encode failed: %w", err)
+	}
+	return nil
+}
+
+func makeMap(headers []string, colums []string) map[string]string {
+	newMap := make(map[string]string, len(headers))
+
+	for i, head := range headers {
+		if i < len(colums) {
+			newMap[head] = colums[i]
+		} else {
+			newMap[head] = ""
 		}
 	}
 
-	encoder.Encode(csvMap)
-
-	return nil
+	return newMap
 }
 
 func main() {
@@ -78,9 +96,12 @@ func main() {
 		Path: *outputFile,
 	}
 
-	csvFile.GetRecords()
-	jsonFile.MakeRecords(csvFile.Records)
-
-	fmt.Println(csvFile.Records)
-
+	if err := csvFile.GetRecords(); err != nil {
+		fmt.Fprintf(os.Stderr, "read csv error: %v\n", err)
+		os.Exit(1)
+	}
+	if err := jsonFile.MakeRecords(csvFile.Records); err != nil {
+		fmt.Fprintf(os.Stderr, "write json error: %v\n", err)
+		os.Exit(1)
+	}
 }

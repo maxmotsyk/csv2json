@@ -1,1 +1,12 @@
-{"age":"Lviv","city":"Lviv","name":"Lviv"}
+[
+  {
+    "age": "27",
+    "city": "Kyiv",
+    "name": "Maks"
+  },
+  {
+    "age": "30",
+    "city": "Lviv",
+    "name": "Anna"
+  }
+]
