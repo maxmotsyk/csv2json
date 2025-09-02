@@ -3,6 +3,7 @@ package csvconv
 import (
 	"encoding/json"
 	"fmt"
+	"log/slog"
 	"os"
 )
 
@@ -24,6 +25,7 @@ func (j *JsonData) MakeRecords(csvData [][]string) error {
 
 	defer f.Close()
 
+	slog.Info("Start JSON encoding", "out_file_path:", j.Path)
 	encoder := json.NewEncoder(f)
 	encoder.SetIndent("", "  ")
 
@@ -38,5 +40,8 @@ func (j *JsonData) MakeRecords(csvData [][]string) error {
 	if err := encoder.Encode(results); err != nil {
 		return fmt.Errorf("json encode failed: %w", err)
 	}
+
+	slog.Info("Finish JSON encoding finish", "out_file_path:", j.Path)
+
 	return nil
 }

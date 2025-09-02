@@ -3,6 +3,7 @@ package csvconv
 import (
 	"encoding/csv"
 	"fmt"
+	"log/slog"
 	"os"
 )
 
@@ -12,6 +13,8 @@ type CsvData struct {
 }
 
 func (c *CsvData) GetRecords() error {
+	slog.Info("Start CSV read", "input_file_path:", c.Path)
+
 	f, err := os.Open(c.Path)
 	if err != nil {
 		return err
@@ -29,5 +32,6 @@ func (c *CsvData) GetRecords() error {
 
 	c.Records = records
 
+	slog.Info("Finish CSV read", "input_file_path:", c.Path)
 	return nil
 }
