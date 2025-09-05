@@ -33,7 +33,7 @@ func (j *JsonData) MakeRecords(csvData [][]string) error {
 	results := make([]map[string]string, 0, len(csvData)-1)
 
 	for i := 1; i < len(csvData); i++ {
-		obj := makeMap(headers, csvData[i])
+		obj := MakeMap(headers, csvData[i])
 		results = append(results, obj)
 	}
 

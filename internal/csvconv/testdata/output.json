@@ -8,5 +8,10 @@
     "age": "30",
     "city": "Lviv",
     "name": "Anna"
+  },
+  {
+    "age": "20",
+    "city": "Sum",
+    "name": "Tom"
   }
 ]

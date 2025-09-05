@@ -4,7 +4,7 @@ import (
 	"log/slog"
 )
 
-func makeMap(headers []string, colums []string) map[string]string {
+func MakeMap(headers []string, colums []string) map[string]string {
 	newMap := make(map[string]string, len(headers))
 
 	for i, head := range headers {
