@@ -1,0 +1,17 @@
+[
+  {
+    "age": "27",
+    "city": "Kyiv",
+    "name": "Maks"
+  },
+  {
+    "age": "30",
+    "city": "Lviv",
+    "name": "Anna"
+  },
+  {
+    "age": "20",
+    "city": "Sum",
+    "name": "Tom"
+  }
+]
