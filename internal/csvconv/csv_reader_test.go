@@ -27,14 +27,14 @@ func TestGetRecord(t *testing.T) {
 			testData: "name,age,city\nBob,30\n",
 			expected: [][]string{
 				{"name", "age", "city"},
-				{"Bob", "30"},
+				{"Bob", "30", ""},
 			},
 		},
 		{
 			name:     "Extra column",
 			testData: "name,age\nOleh,40,Lviv\n",
 			expected: [][]string{
-				{"name", "age"},
+				{"name", "age", ""},
 				{"Oleh", "40", "Lviv"},
 			},
 		},
